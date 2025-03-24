@@ -1,0 +1,18 @@
+services:
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=strongPassword123!  
+      - MSSQL_PID=Express
+      - MSSQL_DATA_DIR=/var/opt/mssql/data
+    ports:
+      - 1433:1433
+    volumes:
+      - sqlserver_data:/var/opt/mssql/data
+    user: "0:0"
+    restart: always
+
+volumes:
+  sqlserver_data:
+    driver: local
