@@ -17,6 +17,12 @@ public class DataContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.Entity<EntryStatus>().HasData(
+            new EntryStatus { Id = 1, Name = "Active"},
+            new EntryStatus { Id = 2, Name = "Completed"},
+            new EntryStatus { Id = 3, Name = "Canceled"}
+        );
+        
         base.OnModelCreating(modelBuilder);
     }
 }

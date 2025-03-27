@@ -23,7 +23,7 @@ public class DapperListService : IListService
         var userId = _authHelper.GetUserId();
         
         using var connection = await _dbConnectionFactory.CreateConnectionAsync();
-        var sql = "SELECT * FROM ToDoLists WHERE UserId = @UserId";
+        var sql = "SELECT * FROM ToDoLists l WHERE UserId = @UserId WHERE IsDeleted = 0";
 
         return await connection.QueryAsync<ToDoList>(sql, new { UserId = userId });
     }
@@ -41,13 +41,14 @@ public class DapperListService : IListService
         var userId = _authHelper.GetUserId();
 
         using var connection = await _dbConnectionFactory.CreateConnectionAsync();
-        var sql = "INSERT INTO ToDoLists (Title, Description, UserId) VALUES (@Title, @Description, @UserId)";
+        var sql = "INSERT INTO ToDoLists (Title, Description, StatusId, UserId) VALUES (@Title, @Description, @StatusId, @UserId)";
 
         await connection.ExecuteAsync(sql, new
         {
             toDoList.Title,
             toDoList.Description,
             CreatedAt = DateTime.UtcNow,
+            StatusId = toDoList.Status.Id,
             userId
         });
     }
@@ -96,7 +97,7 @@ public class DapperListService : IListService
             "usp_DeleteToDoList",
             new
             {
-                listId
+                listId = listId
             },
             commandType: CommandType.StoredProcedure);
     }

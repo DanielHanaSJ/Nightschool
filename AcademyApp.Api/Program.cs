@@ -36,8 +36,8 @@ builder.Services.AddSwaggerGen(x =>
     x.EnableAnnotations();
 });
 
-builder.Services.AddScoped<IListService, DapperListService>();
-builder.Services.AddScoped<IAuthService, DapperAuthService>();
+builder.Services.AddScoped<IListService, EfCoreListService>();
+builder.Services.AddScoped<IAuthService, EfCoreAuthService>();
 builder.Services.AddScoped<IAuthHelper, AuthHelper>();
 builder.Services.AddScoped<IDbConnectionFactory, SqlConnectionFactory>();
 

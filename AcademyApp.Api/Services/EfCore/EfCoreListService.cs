@@ -1,14 +1,28 @@
 using System;
 using AcademyApp.Api.Contracts;
+using AcademyApp.Api.Database.EfCore;
 using AcademyApp.Api.Models.Entities;
 
 namespace AcademyApp.Api.Services.EfCore;
 
 public class EfCoreListService : IListService
 {
-    public Task AddToDoListAsync(ToDoList toDoList)
+    private readonly DataContext _context;
+    private readonly IAuthHelper _authHelper;
+
+    public EfCoreListService(DataContext context, IAuthHelper authHelper)
     {
-        throw new NotImplementedException();
+        _context = context;
+        _authHelper = authHelper;
+    }
+
+    public async Task AddToDoListAsync(ToDoList toDoList)
+    {
+        var userId = _authHelper.GetUserId();
+        toDoList.UserId = userId;
+        
+        _context.ToDoLists.Add(toDoList);
+        await _context.SaveChangesAsync();
     }
 
     public Task AddToDoListEntryAsync(ToDoListEntry toDoListEntry)

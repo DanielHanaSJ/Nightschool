@@ -47,7 +47,7 @@ public class DapperAuthService : IAuthService
         using var connection = await _dbConnectionFactory.CreateConnectionAsync();
 
         // Check if the username already exists
-        var existingUser = await connection.QuerySingleOrDefaultAsync<User>("SELECT * FROM [Users] WHERE Username = @Username", new { Username = username });
+        var existingUser = await connection.QuerySingleOrDefaultAsync<User>("SELECT Id FROM [Users] WHERE Username = @Username", new { Username = username });
 
         if (existingUser != null)
         {
